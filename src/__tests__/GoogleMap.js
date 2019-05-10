@@ -1,11 +1,11 @@
 import React from 'react'
 import {render} from 'react-testing-library'
 import 'jest-dom/extend-expect'
-import Main from '../components/Main'
+import GoogleMap from '../components/GoogleMap'
 
 
-it('should display google map', () => {
-  const {getByTestId} = render(<Main />)
+it('Renders google map', () => {
+  const {getByTestId} = render(<GoogleMap />)
   expect(getByTestId('google-map-container')).toBeInTheDocument()
 });
 
