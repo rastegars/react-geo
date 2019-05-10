@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import '../styles/Search.css';
 
 class Search extends Component {
   render() {
     return (
-      <div data-testid='search-container' style={{position: 'absolute', left: '50%', width: '50%'}}>
+      <div data-testid='search-container' className='search-container'>
         <div>
           <form>
             <input

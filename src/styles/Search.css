@@ -1,0 +1,10 @@
+.search-container {
+  position: absolute;
+  left: 50%;
+  width: 50%;
+}
+
+.search-form-container {
+  padding: 15px;
+  margin: 10px;
+}
