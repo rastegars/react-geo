@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/Search.css';
+import Places from './Places'
 
 class Search extends Component {
   render() {
@@ -12,6 +13,7 @@ class Search extends Component {
               placeholder="Search a location" />
           </form>
         </div>
+        <Places data={this.props.locations} />
       </div>
     )
   }
