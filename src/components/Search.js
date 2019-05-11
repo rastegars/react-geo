@@ -1,19 +1,68 @@
 import React, { Component } from 'react';
 import '../styles/Search.css';
-import Places from './Places'
+import Places from './Places';
+import SearchResult from './SearchResult';
+import axios from 'axios';
+
+const initialState = {
+  searchItems: [],
+  query: '',
+}
 
 class Search extends Component {
+  constructor(props) {
+    super(props)
+    this.state = initialState
+  }
+
+  handleInputChange = (e) => {
+    let query = e.target.value
+    this.setState({ query })
+
+    if (query && query.length > 1) {
+      this.search();
+    } 
+  }
+
+  search = () => {
+    const SEARCH_URL = 'http://localhost:3004/places/search'
+    axios.get(`${SEARCH_URL}?prefix=${this.state.query}&limit=7`)
+         .then(({ data }) => {
+           this.setState({
+             searchItems: data,
+             loading: false,
+           })
+         })
+  }
+
+  renderContent = () => {
+    if (this.state.query.length > 1) {
+      return (
+        <SearchResult 
+          data={this.state.searchItems}
+        />
+      )
+    }
+
+    return (
+      <Places data={this.props.locations} />
+    )
+      
+  }
+
   render() {
     return (
-      <div data-testid='search-container' className='search-container'>
+      <div data-testid='search-container'>
         <div>
           <form>
             <input
               type="text"
-              placeholder="Search a location" />
+              placeholder="Search a location"
+              onChange={this.handleInputChange}
+              />
           </form>
         </div>
-        <Places data={this.props.locations} />
+        {this.renderContent()}
       </div>
     )
   }
