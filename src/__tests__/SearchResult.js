@@ -7,6 +7,8 @@ import SearchResult from '../components/SearchResult'
 afterEach(cleanup);
 jest.mock('axios');
 const addLocation = jest.fn()
+const reset = jest.fn()
+const showError = jest.fn()
 
 let response = {
   data: {
@@ -40,7 +42,7 @@ describe('when the save button is clicked', () => {
     let locations = [{ data: { place_id: 1, display_name: 'Display Name', lat: 11.2, lon: 12.4 }}]
 
     const {getByText} = render(
-      <SearchResult data={locations} addLocation={addLocation} />
+      <SearchResult data={locations} addLocation={addLocation} showError={showError} />
     )
 
     fireEvent.click(getByText(/save/i))

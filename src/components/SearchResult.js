@@ -21,7 +21,9 @@ class SearchResult extends Component {
     }).then(({data}) => {
         this.props.addLocation(data)
         this.props.reset()
-      })
+      }).catch((error) => {
+          this.props.showError()
+        })
   }
 
   render() {

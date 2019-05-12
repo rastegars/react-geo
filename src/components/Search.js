@@ -29,6 +29,7 @@ class Search extends Component {
     this.setState(initialState)
   }
 
+  showError = () => this.setState({ error: true })
 
   search = () => {
     const SEARCH_URL = 'http://localhost:3004/places/search'
@@ -39,9 +40,7 @@ class Search extends Component {
              error: false
            })
          }).catch((error) => {
-            this.setState({
-              error: true
-            })
+            this.showError()
           })
   }
 
@@ -58,6 +57,7 @@ class Search extends Component {
           data={this.state.searchItems}
           addLocation={this.props.addLocation}
           reset={this.reset}
+          showError={this.showError}
         />
       )
     }
