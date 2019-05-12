@@ -19,29 +19,51 @@ test('renders serach container', () => {
   expect(getByTestId('search-container')).toBeInTheDocument()
 });
 
-test('Search makes an API call and displays the results when the input is changed', async () => {
-  let response = { data: [{
-      data: {
-        place_id: 1,
-        display_name: 'Place Name',
-        lat: '48.85',
-        lon: '2.35'
-      }
-    }]
-  }
+describe('when the input is changed', () => {
+  describe('makes an API call', () => {
+    let response = { data: [{
+        data: {
+          place_id: 1,
+          display_name: 'Place Name',
+          lat: '48.85',
+          lon: '2.35'
+        }
+      }]
+    }
 
-  axiosMock.get.mockResolvedValueOnce(response)
+    test('on success response, displays the results', async () => {
+      axiosMock.get.mockResolvedValueOnce(response)
 
-  const {getByText, getByTestId, getByPlaceholderText} = render(
-    <Search locations={data} />
-  )
+      const {getByText, getByTestId, getByPlaceholderText} = render(
+        <Search locations={data} />
+      )
 
-  fireEvent.change(getByPlaceholderText("Search a location"), { target: { value: 'paris' }})
+      fireEvent.change(getByPlaceholderText("Search a location"), { target: { value: 'paris' }})
 
-  await waitForElement(() =>
-    getByTestId('search-result')
-  )
+      await waitForElement(() =>
+        getByTestId('search-result')
+      )
 
-  expect(axiosMock.get).toHaveBeenCalledTimes(1)
-  expect(getByTestId('search-result')).toHaveTextContent('Place Name')
-});
+      expect(axiosMock.get).toHaveBeenCalledTimes(1)
+      expect(getByTestId('search-result')).toHaveTextContent('Place Name')
+    });
+
+    test('on failed to get the results, displays an error message', async () => {
+      axiosMock.get.mockImplementation((url) => {
+        return Promise.reject();
+      });
+
+      const {getByText, getByTestId, getByPlaceholderText} = render(
+        <Search locations={data} />
+      )
+
+      fireEvent.change(getByPlaceholderText("Search a location"), { target: { value: 'paris' }})
+
+      await waitForElement(() =>
+        getByText('Session Timeout!')
+      )
+
+      expect(getByText('Session Timeout!')).toBeInTheDocument()
+    });
+  })
+})

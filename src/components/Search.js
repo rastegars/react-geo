@@ -7,6 +7,7 @@ import axios from 'axios';
 const initialState = {
   searchItems: [],
   query: '',
+  error: false
 }
 
 class Search extends Component {
@@ -31,11 +32,23 @@ class Search extends Component {
            this.setState({
              searchItems: data,
              loading: false,
+             error: false
            })
-         })
+         }).catch((error) => {
+            this.setState({
+               error: true
+             })
+          })
   }
 
+
   renderContent = () => {
+    if (this.state.error) {
+      return (
+        <div className="error" style={{margin: 20}}>Session Timeout!</div>
+      )
+    }
+
     if (this.state.query.length > 1) {
       return (
         <SearchResult 
@@ -52,7 +65,7 @@ class Search extends Component {
 
   render() {
     return (
-      <div data-testid='search-container'>
+      <div data-testid='search-container' className='search-container'>
         <div>
           <form>
             <input
