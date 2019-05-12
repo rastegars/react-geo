@@ -6,16 +6,18 @@ import SearchResult from '../components/SearchResult'
 
 afterEach(cleanup);
 jest.mock('axios');
-test('renders search results with a save button', async () => {
-  let response = {
-    data: {
-      id: 27,
-      location: "Place Name",
-      lat: "-4.479925",
-      lon: "-63.5185396"
-    }
-  }
+const addLocation = jest.fn()
 
+let response = {
+  data: {
+    id: 27,
+    location: "Place Name",
+    lat: "-4.479925",
+    lon: "-63.5185396"
+  }
+}
+
+test('renders search results with a save button', async () => {
   axiosMock.get.mockResolvedValueOnce(response)
   
   let locations = [{ data: { place_id: 1, display_name: 'Display Name', lat: 11.2, lon: 12.4 }}]
@@ -29,4 +31,20 @@ test('renders search results with a save button', async () => {
   )
 
   expect(getByTestId('search-result')).toHaveTextContent('Display Name')
+})
+
+describe('when the save button is clicked', () => {
+  test('makes an api call', async () => {
+    axiosMock.post.mockResolvedValueOnce(response)
+    
+    let locations = [{ data: { place_id: 1, display_name: 'Display Name', lat: 11.2, lon: 12.4 }}]
+
+    const {getByText} = render(
+      <SearchResult data={locations} addLocation={addLocation} />
+    )
+
+    fireEvent.click(getByText(/save/i))
+
+    expect(axiosMock.post).toHaveBeenCalledTimes(1)
+  })
 })

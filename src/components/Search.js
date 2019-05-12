@@ -7,7 +7,7 @@ import axios from 'axios';
 const initialState = {
   searchItems: [],
   query: '',
-  error: false
+  error: false,
 }
 
 class Search extends Component {
@@ -25,22 +25,25 @@ class Search extends Component {
     } 
   }
 
+  reset = () => {
+    this.setState(initialState)
+  }
+
+
   search = () => {
     const SEARCH_URL = 'http://localhost:3004/places/search'
     axios.get(`${SEARCH_URL}?prefix=${this.state.query}&limit=7`)
          .then(({ data }) => {
            this.setState({
              searchItems: data,
-             loading: false,
              error: false
            })
          }).catch((error) => {
             this.setState({
-               error: true
-             })
+              error: true
+            })
           })
   }
-
 
   renderContent = () => {
     if (this.state.error) {
@@ -53,6 +56,8 @@ class Search extends Component {
       return (
         <SearchResult 
           data={this.state.searchItems}
+          addLocation={this.props.addLocation}
+          reset={this.reset}
         />
       )
     }
@@ -60,7 +65,6 @@ class Search extends Component {
     return (
       <Places data={this.props.locations} />
     )
-      
   }
 
   render() {

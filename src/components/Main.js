@@ -21,11 +21,15 @@ class Main extends Component {
     })
   }
 
+  addLocation = (location) => {
+    this.setState({locations: [...this.state.locations, location]})
+  }
+
   render() {
     return (
       <div>
         <GoogleMap />
-        <Search locations={this.state.locations} />
+        <Search locations={this.state.locations} addLocation={this.addLocation} />
       </div>
     )
   }
