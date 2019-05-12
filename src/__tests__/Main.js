@@ -38,30 +38,30 @@ test('fetches saved places', async () => {
 });
 
 describe('when the save button is clicked in search result', () => {
+  const searchResult = {
+    data: [{
+      data: {
+        place_id: 1,
+        display_name: 'Place Name',
+        lat: '48.85',
+        lon: '2.35'
+      }
+    }
+  ]}
+
+  const places =  {
+    data: [
+      {
+        id: 1,
+        location: 'Place Name',
+        lat: 48.85,
+        lon: 2.35
+      }
+    ]
+  }
+
   describe('on successful save', () => {
     test('adds location to dom', async () => {
-      const places =  {
-        data: [
-          {
-            id: 1,
-            location: 'Place Name',
-            lat: 48.85,
-            lon: 2.35
-          }
-        ]
-      }
-
-      const searchResult = {
-        data: [{
-          data: {
-            place_id: 1,
-            display_name: 'Place Name',
-            lat: '48.85',
-            lon: '2.35'
-          }
-        }
-      ]}
-
       response = {
         data: {
           id: 2,
@@ -105,37 +105,6 @@ describe('when the save button is clicked in search result', () => {
 
   describe('on save failed', () => {
     test('displays error message', async () => {
-      const places =  {
-        data: [
-          {
-            id: 1,
-            location: 'Place Name',
-            lat: 48.85,
-            lon: 2.35
-          }
-        ]
-      }
-
-      const searchResult = {
-        data: [{
-          data: {
-            place_id: 1,
-            display_name: 'Place Name',
-            lat: '48.85',
-            lon: '2.35'
-          }
-        }
-      ]}
-
-      response = {
-        data: {
-          id: 2,
-          location: 'New Place',
-          lat: "-4.479925",
-          lon: "-63.5185396"
-        }
-      }
-
       axiosMock.get.mockImplementation((url) => {
         if (new URL(url).pathname === '/places/search') {
           return Promise.resolve(searchResult);
