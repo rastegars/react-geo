@@ -24,6 +24,20 @@ class Main extends Component {
       })
   }
 
+  deletePlace = (itemID) => {
+    axios.delete(`http://localhost:3004/places/${itemID}`)
+      .then(() => {
+          let arr = this.state.locations
+          let findIndex = arr.findIndex((element) => element.id === itemID)
+          let result = findIndex >= 0 ? [...arr.slice(0, findIndex), ...arr.slice(findIndex + 1)] : arr
+          this.setState({locations: result, error: false})
+        }).catch((error) => {
+            this.setState({error: true})
+          })
+    
+  }
+    
+
   showError = () =>
     this.setState({error: true})
 
@@ -45,7 +59,7 @@ class Main extends Component {
         </div>
         {this.state.error && this.renderError()}
         <GoogleMap data={this.state.locations} />
-        <Search locations={this.state.locations} addLocation={this.addLocation} showError={this.showError} />
+        <Search locations={this.state.locations} addLocation={this.addLocation} showError={this.showError} deletePlace={this.deletePlace} />
       </div>
     )
   }

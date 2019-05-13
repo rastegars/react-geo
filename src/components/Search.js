@@ -61,7 +61,7 @@ class Search extends Component {
     }
 
     return (
-      <Places data={this.props.locations} />
+      <Places data={this.props.locations} deletePlace={this.props.deletePlace} />
     )
   }
 

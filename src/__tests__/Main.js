@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, cleanup, waitForElement, fireEvent} from 'react-testing-library'
+import {render, cleanup, waitForElement, waitForDomChange, fireEvent} from 'react-testing-library'
 import 'jest-dom/extend-expect'
 import axiosMock from 'axios'
 import Main from '../components/Main'
@@ -24,7 +24,6 @@ test('displays google map', () => {
   const {getByTestId, getAllByText} = render(<Main />)
 
   expect(getByTestId('google-map-container')).toBeInTheDocument()
-  jest.restoreAllMocks
 });
 
 describe('Component loads', () => {
@@ -47,7 +46,7 @@ describe('Component loads', () => {
       await waitForElement(() =>
         getByTestId('marker'),
       )
-    });
+    })
   })
 
   describe('failled request', () => {
@@ -64,7 +63,48 @@ describe('Component loads', () => {
     });
   }) 
 })
-  
+
+describe('remove button', () => {
+  describe('on success', () => {
+    test('removes the place from the list', async () => {
+      axiosMock.get.mockResolvedValueOnce(response)
+      axiosMock.delete.mockResolvedValueOnce(response)
+
+      const {getByText, queryByText} = render(<Main />)
+
+      await waitForElement(() =>
+        getByText('Remove'),
+      )
+
+      fireEvent.click(getByText('Remove'))
+
+      await waitForDomChange()
+
+      expect(queryByText('Place Name')).toBeNull()
+    });
+  });
+
+  describe('on error', () => {
+    test('displays error message', async () => {
+      axiosMock.get.mockResolvedValueOnce(response)
+      axiosMock.delete.mockImplementation((url) => {
+        return Promise.reject();
+      });
+
+      const {getByText, queryByText} = render(<Main />)
+
+      await waitForElement(() =>
+        getByText('Remove'),
+      )
+
+      fireEvent.click(getByText('Remove'))
+
+      await waitForElement(() =>
+        getByText('Something Went Wrong!')
+      )
+    });
+  });
+})
 
 describe('when the save button is clicked in search result', () => {
   const searchResult = {

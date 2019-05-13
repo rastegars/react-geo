@@ -6,6 +6,7 @@ import Places from '../components/Places.js'
 
 afterEach(cleanup);
 jest.mock('axios');
+const deletePlace = jest.fn()
 
 test('Displays saved places', async () => {
   let data = [{
@@ -16,7 +17,7 @@ test('Displays saved places', async () => {
   }]
 
   const {getByText} = render(
-    <Places data={data} />
+    <Places data={data} deletePlace={deletePlace} />
   )
 
   expect(getByText('Place Name')).toBeInTheDocument()

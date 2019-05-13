@@ -23,7 +23,6 @@ class SearchResult extends Component {
         this.props.addLocation(data)
         this.props.reset()
       }).catch((error) => {
-          console.log("*************** hi")
           this.props.showError()
         })
   }

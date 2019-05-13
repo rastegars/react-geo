@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 import '../styles/Places.css'
 
 class Places extends Component {
@@ -18,6 +19,9 @@ class Places extends Component {
       <p className="location-name">{item.location}</p>
       <p>Latitude: {item.lat}</p>
       <p>Longitude: {item.lon}</p>
+      <div style={{textAlign: 'right'}}>
+        <div className="deleteButton" onClick={() => this.props.deletePlace(item.id)}>Remove</div>
+      </div>
     </div>
 
   render() {

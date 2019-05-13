@@ -9,3 +9,16 @@
   font-weight: bold;
   color: #317CBD;
 }
+
+.deleteButton {
+  color: #36c;
+  cursor: pointer;
+  font: 13px arial,sans-serif;
+  align-self: center;
+  padding-right: 3px;
+  text-decoration: none;
+}
+
+.deleteButton:hover {
+  text-decoration: underline;
+}
