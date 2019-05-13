@@ -19,8 +19,8 @@ class Main extends Component {
         locations: data
       }) 
     }).catch((error) => {
-          this.setState({error: true})
-        })
+        this.setState({error: true})
+      })
   }
 
   renderError = () =>
@@ -34,7 +34,7 @@ class Main extends Component {
     return (
       <div>
         {this.state.error && this.renderError()}
-        <GoogleMap />
+        <GoogleMap data={this.state.locations} />
         <Search locations={this.state.locations} addLocation={this.addLocation} />
       </div>
     )

@@ -38,6 +38,16 @@ describe('Component loads', () => {
         getAllByText('Place Name'),
       )
     });
+
+    test('displays markers on the map', async () => {
+      axiosMock.get.mockResolvedValueOnce(response)
+
+      const {getByTestId} = render(<Main />)
+
+      await waitForElement(() =>
+        getByTestId('marker'),
+      )
+    });
   })
 
   describe('failled request', () => {
