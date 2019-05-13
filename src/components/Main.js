@@ -30,7 +30,7 @@ class Main extends Component {
   renderError = () =>
     <div className="alert">
       <span className="closebtn" onClick={() => this.setState({ error: false })}>&times;</span> 
-      Something Went Wrong!
+      <p style={{margin: 0}}>Something Went Wrong!</p>
     </div>
 
   addLocation = (location) => {
@@ -40,8 +40,8 @@ class Main extends Component {
   render() {
     return (
       <div>
-        <div class="header">
-          <a href="#default" class="logo">React Geocoding Exercise</a>
+        <div className="header">
+          <a href="#default" className="logo">React Geocoding Exercise</a>
         </div>
         {this.state.error && this.renderError()}
         <GoogleMap data={this.state.locations} />
