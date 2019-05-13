@@ -48,22 +48,6 @@ describe('when the input is changed', () => {
       expect(getByTestId('search-result')).toHaveTextContent('Place Name')
     });
 
-    test('on failed to get the results, displays an error message', async () => {
-      axiosMock.get.mockImplementation((url) => {
-        return Promise.reject();
-      });
-
-      const {getByText, getByTestId, getByPlaceholderText} = render(
-        <Search locations={data} />
-      )
-
-      fireEvent.change(getByPlaceholderText("Search a location"), { target: { value: 'paris' }})
-
-      await waitForElement(() =>
-        getByText('Session Timeout!')
-      )
-
-      expect(getByText('Session Timeout!')).toBeInTheDocument()
-    });
+    
   })
 })

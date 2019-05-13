@@ -23,6 +23,7 @@ class SearchResult extends Component {
         this.props.addLocation(data)
         this.props.reset()
       }).catch((error) => {
+          console.log("*************** hi")
           this.props.showError()
         })
   }
@@ -30,7 +31,9 @@ class SearchResult extends Component {
   render() {
     const options = this.state.locations.map(location => (
       <li className='search-item' key={location.data.place_id} >
-        <div>{location.data.display_name.length > 40 ? ((location.data.display_name.substring(0, 40) + ' ...')) : location.data.display_name}</div>
+        <div>
+        {location.data.display_name.length > 40 ? ((location.data.display_name.substring(0, 40) + ' ...')) : location.data.display_name}
+        </div>
         <div style={{textAlign: 'right'}}>
           <button className="button" onClick={() => this.saveLocation(location)}>Save</button>
         </div>

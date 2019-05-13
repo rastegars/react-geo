@@ -24,6 +24,9 @@ class Main extends Component {
       })
   }
 
+  showError = () =>
+    this.setState({error: true})
+
   renderError = () =>
     <div className="alert">
       <span className="closebtn" onClick={() => this.setState({ error: false })}>&times;</span> 
@@ -39,7 +42,7 @@ class Main extends Component {
       <div>
         {this.state.error && this.renderError()}
         <GoogleMap data={this.state.locations} />
-        <Search locations={this.state.locations} addLocation={this.addLocation} />
+        <Search locations={this.state.locations} addLocation={this.addLocation} showError={this.showError} />
       </div>
     )
   }

@@ -161,10 +161,10 @@ describe('when the save button is clicked in search result', () => {
       fireEvent.click(getByText(/save/i))
 
       await waitForElement(() =>
-        getByText('Session Timeout!')
+        getByText('Something Went Wrong!')
       )
 
-      expect(getByText('Session Timeout!')).toBeInTheDocument()
+      expect(getByText('Something Went Wrong!')).toBeInTheDocument()
     })
   })
 })

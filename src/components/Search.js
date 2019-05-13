@@ -29,8 +29,6 @@ class Search extends Component {
     this.setState(initialState)
   }
 
-  showError = () => this.setState({ error: true })
-
   search = () => {
     const SEARCH_URL = 'http://localhost:3004/places/search'
     axios.get(`${SEARCH_URL}?prefix=${this.state.query}&limit=7`)
@@ -40,7 +38,7 @@ class Search extends Component {
              error: false
            })
          }).catch((error) => {
-            this.showError()
+            this.props.showError()
           })
   }
 
@@ -57,7 +55,7 @@ class Search extends Component {
           data={this.state.searchItems}
           addLocation={this.props.addLocation}
           reset={this.reset}
-          showError={this.showError}
+          showError={this.props.showError}
         />
       )
     }
