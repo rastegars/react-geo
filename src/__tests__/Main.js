@@ -27,15 +27,34 @@ test('displays google map', () => {
   jest.restoreAllMocks
 });
 
-test('fetches saved places', async () => {
-  axiosMock.get.mockResolvedValueOnce(response)
+describe('Component loads', () => {
+  describe('successful request', () => {
+    test('fetches saved places', async () => {
+      axiosMock.get.mockResolvedValueOnce(response)
 
-  const {getByTestId, getAllByText} = render(<Main />)
+      const {getByTestId, getAllByText} = render(<Main />)
 
-  await waitForElement(() =>
-    getAllByText('Place Name'),
-  )
-});
+      await waitForElement(() =>
+        getAllByText('Place Name'),
+      )
+    });
+  })
+
+  describe('failled request', () => {
+    test('displays error message', async () => {
+      axiosMock.get.mockImplementation((url) => {
+        return Promise.reject();
+      });
+
+      const {getByText} = render(<Main />)
+
+      await waitForElement(() =>
+        getByText('Something Went Wrong!')
+      )
+    });
+  }) 
+})
+  
 
 describe('when the save button is clicked in search result', () => {
   const searchResult = {

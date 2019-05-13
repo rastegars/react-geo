@@ -6,7 +6,7 @@ import Search from './Search'
 class Main extends Component {
   constructor(props) {
     super(props)
-    this.state = { locations: [] }
+    this.state = { locations: [], error: false }
   }
 
   componentDidMount() {
@@ -17,9 +17,14 @@ class Main extends Component {
     axios.get('http://localhost:3004/places').then(({data}) => {
       this.setState({
         locations: data
-      })
-    })
+      }) 
+    }).catch((error) => {
+          this.setState({error: true})
+        })
   }
+
+  renderError = () =>
+    <p>Something Went Wrong!</p>
 
   addLocation = (location) => {
     this.setState({locations: [...this.state.locations, location]})
@@ -28,6 +33,7 @@ class Main extends Component {
   render() {
     return (
       <div>
+        {this.state.error && this.renderError()}
         <GoogleMap />
         <Search locations={this.state.locations} addLocation={this.addLocation} />
       </div>
