@@ -40,6 +40,9 @@ class Main extends Component {
   render() {
     return (
       <div>
+        <div class="header">
+          <a href="#default" class="logo">React Geocoding Exercise</a>
+        </div>
         {this.state.error && this.renderError()}
         <GoogleMap data={this.state.locations} />
         <Search locations={this.state.locations} addLocation={this.addLocation} showError={this.showError} />
