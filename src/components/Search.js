@@ -70,7 +70,7 @@ class Search extends Component {
   render() {
     return (
       <div data-testid='search-container' className='search-container'>
-        <div>
+        <div className='form-container'>
           <form>
             <input
               type="text"

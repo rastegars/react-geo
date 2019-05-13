@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import '../styles/Places.css'
 
 class Places extends Component {
   constructor(props) {
@@ -13,8 +14,8 @@ class Places extends Component {
   }
 
   renderItem = (item) =>
-    <div key={item.id}>
-      <p>{item.location}</p>
+    <div className="list-item" key={item.id}>
+      <p className="location-name">{item.location}</p>
       <p>Latitude: {item.lat}</p>
       <p>Longitude: {item.lon}</p>
     </div>

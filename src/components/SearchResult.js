@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import '../styles/SearchResult.css'
 
 class SearchResult extends Component {
   constructor(props) {
@@ -28,10 +29,10 @@ class SearchResult extends Component {
 
   render() {
     const options = this.state.locations.map(location => (
-      <li key={location.data.place_id} >
+      <li className='search-item' key={location.data.place_id} >
         <div>{location.data.display_name.length > 40 ? ((location.data.display_name.substring(0, 40) + ' ...')) : location.data.display_name}</div>
-        <div>
-          <button onClick={() => this.saveLocation(location)}>Save</button>
+        <div style={{textAlign: 'right'}}>
+          <button className="button" onClick={() => this.saveLocation(location)}>Save</button>
         </div>
       </li>
     ))

@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
 import GoogleMapReact from 'google-map-react'
-import '../styles/GoogleMap.css';
+import '../styles/GoogleMap.css'
+
+const mapStyles = {
+  width: '100%',
+  height: '100%'
+}
 
 const Marker = ({ title }) => {
   const markerImageSrc = "https://res.cloudinary.com/og-tech/image/upload/s--OpSJXuvZ--/v1545236805/map-marker_hfipes.png"
-  return <div data-testid="marker">
-    <img 
+  return <div data-testid="marker" className='marker'>
+    <img
+       className='marker-image'
        src={markerImageSrc}
        alt={title} />
     <h3>{title}</h3>
@@ -40,6 +46,7 @@ class GoogleMap extends Component {
     return (
       <div data-testid='google-map-container' className='map-container'>
         <GoogleMapReact
+          style={mapStyles}
           bootstrapURLKeys={{ key: 'AIzaSyBF-jDwc5-WCjWj-S4pE71cguwIKmEMMaQ' }}
           center={this.state.center}
           zoom={1}

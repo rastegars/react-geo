@@ -1,0 +1,11 @@
+.list-item {
+  border-radius: 5px; 
+  padding: 20px;
+  margin: 10px;
+}
+
+.location-name {
+  font-size: 25px;
+  font-weight: bold;
+  color: #317CBD;
+}

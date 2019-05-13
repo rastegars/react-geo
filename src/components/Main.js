@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import GoogleMap from './GoogleMap'
 import Search from './Search'
+import '../styles/Main.css'
 
 class Main extends Component {
   constructor(props) {
@@ -24,7 +25,10 @@ class Main extends Component {
   }
 
   renderError = () =>
-    <p>Something Went Wrong!</p>
+    <div className="alert">
+      <span className="closebtn" onClick={() => this.setState({ error: false })}>&times;</span> 
+      Something Went Wrong!
+    </div>
 
   addLocation = (location) => {
     this.setState({locations: [...this.state.locations, location]})
