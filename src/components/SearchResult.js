@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import axios from 'axios'
 import '../styles/SearchResult.css'
 
-class SearchResult extends Component {
+class SearchResult extends PureComponent {
   constructor(props) {
     super(props)
     this.state = { locations: this.props.data }

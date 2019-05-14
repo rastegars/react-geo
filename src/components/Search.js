@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import '../styles/Search.css';
 import Places from './Places';
 import SearchResult from './SearchResult';
@@ -10,7 +10,7 @@ const initialState = {
   error: false,
 }
 
-class Search extends Component {
+class Search extends PureComponent {
   constructor(props) {
     super(props)
     this.state = initialState

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import GoogleMapReact from 'google-map-react'
 import '../styles/GoogleMap.css'
 
@@ -18,7 +18,7 @@ const Marker = ({ title }) => {
   </div>
 }
 
-class GoogleMap extends Component {
+class GoogleMap extends PureComponent {
   constructor(props) {
     super(props)
     this.state = { center: { lat: 5.6219868, lng: -0.23223 }, locations: this.props.data }

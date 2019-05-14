@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
-import axios from 'axios'
+import React, { PureComponent } from 'react'
 import '../styles/Places.css'
 
-class Places extends Component {
+class Places extends PureComponent {
   constructor(props) {
     super(props)
     this.state = { locations: props.data }
