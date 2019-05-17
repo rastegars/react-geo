@@ -56,7 +56,7 @@ class Main extends PureComponent {
           <a href="#default" className="logo">React Geocoding Exercise</a>
         </div>
         {this.state.error && this.renderError()}
-        <GoogleMap data={this.state.locations} />
+        <GoogleMap data={this.state.locations} showError={this.showError} />
         <Search locations={this.state.locations} addLocation={this.addLocation} showError={this.showError} deletePlace={this.deletePlace} />
       </div>
     )

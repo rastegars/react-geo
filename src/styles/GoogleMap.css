@@ -18,3 +18,14 @@
 .marker-image {
   height: 100%;
 }
+
+.editBar {
+  padding: 20px;
+  background-color: #404040;
+  color: white;
+  position: fixed;
+  z-index: 2;
+  right: 0;
+  top: 88px;
+  left: 0px;
+}
