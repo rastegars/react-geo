@@ -29,7 +29,7 @@ test('shows edit bar when marker is clicked', () => {
 });
 
 
-test('updates marker location upon clicking on map', async () => {
+describe('marker edit', () => {
   const response = { data:
     [{ data: {
         display_name: 'New Place'
@@ -37,15 +37,60 @@ test('updates marker location upon clicking on map', async () => {
     }]
   }
 
-  axiosMock.get.mockResolvedValueOnce(response)
-  const ref = React.createRef();
-  const {getByTestId, getByText, queryByTestId, findByText} = render(<GoogleMap data={data} ref={ref} />)
-  
-  fireEvent.click(getByTestId('marker'))
+  test('updates marker location upon clicking on map', async () => {
+    axiosMock.get.mockResolvedValueOnce(response)
+    const ref = React.createRef();
+    const {getByTestId, getByText} = render(<GoogleMap data={data} ref={ref} />)
+    
+    fireEvent.click(getByTestId('marker'))
 
-  ref.current._map.current.props.onClick({lat: 20.1, lng: 15.4})
+    ref.current._map.current.props.onClick({lat: 20.1, lng: 15.4})
 
-  await waitForElement(() =>
-    getByText('New Place')
-  )
-});
+    await waitForElement(() =>
+      getByText('New Place')
+    )
+  })
+
+  test('persists new location', async () => {  
+    const postResponse = { data: {
+        id: 2,
+        location: 'New Place',
+        lat: "34.0",
+        lon: "15.0",
+      }
+    }
+
+    axiosMock.get.mockResolvedValueOnce(response)
+    axiosMock.patch.mockResolvedValueOnce(postResponse)
+
+    const ref = React.createRef();
+    const {getByTestId, getByText, queryByText} = render(<GoogleMap data={data} ref={ref} />)
+    
+    fireEvent.click(getByTestId('marker'))
+
+    ref.current._map.current.props.onClick({lat: 20.1, lng: 15.4})
+
+    await waitForElement(() =>
+      getByText('New Place')
+    )
+
+    fireEvent.click(getByText('Save'))
+
+    expect(queryByText('Place Name')).not.toBeInTheDocument()
+
+    cleanup()
+    const data2 = [{
+        id: 2,
+        location: 'New Place',
+        lat: "34.0",
+        lon: "15.0",
+      }]
+    const { rerender } = render(<GoogleMap data={data2} ref={ref} />)
+
+    rerender(<GoogleMap data={data2} ref={ref} />)
+
+    await waitForElement(() =>
+      getByText('New Place')
+    )
+  })
+})

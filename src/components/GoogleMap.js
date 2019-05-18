@@ -49,8 +49,6 @@ class GoogleMap extends PureComponent {
         lat={item.lat}
         lng={item.lon}
         dataTestid={this.state.activeMarker ? "active-marker" : "marker"}
-        // draggable={true}
-        // onDragend={(t, map, coord) => console.log(t)}
       >
       </Marker>
     )
@@ -78,13 +76,37 @@ class GoogleMap extends PureComponent {
     }
     return this.state.locations.map(location => this.renderMarker(location))
   }
-    
+
+  activeIndex = () => 
+    this.state.locations.findIndex(location => location.id === this.state.activeMarker.id)
+
+  finishEdit = () => this.setState({activeMarker: null})
+
+  saveEdit = () => {
+    const {id, location, lat, lon} = this.state.activeMarker
+    console.log(this.state.activeMarker)
+    const URL = 'http://localhost:3004/places'
+    axios.patch(`${URL}/${this.state.activeMarker.id}`, {
+      place: {
+        location,
+        lat,
+        lon
+      }
+    }).then(({data}) => {
+      console.log(data)
+      const locations = this.state.locations.filter(el => el.id !== this.state.activeMarker.id)
+      this.setState({locations: [...locations, data], activeMarker: null})
+    }).catch((error) => {
+      this.props.showError()
+    })
+  }
 
   render() {
+    console.log(this.state.locations)
     return (
       <div>
         { this.state.activeMarker &&
-          <div className="editBar">
+          <div className="editBar" onClick={this.saveEdit}>
             <button className="button">Save</button>
           </div>
         }
