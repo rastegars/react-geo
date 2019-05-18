@@ -25,10 +25,20 @@ const Marker = (props) => {
 }
 
 class GoogleMap extends PureComponent {
+  _isMounted = false
+
   constructor(props) {
     super(props)
     this.state = { center: { lat: 5.6219868, lng: -0.23223 }, locations: this.props.data }
     this._map = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -84,7 +94,6 @@ class GoogleMap extends PureComponent {
 
   saveEdit = () => {
     const {id, location, lat, lon} = this.state.activeMarker
-    console.log(this.state.activeMarker)
     const URL = 'http://localhost:3004/places'
     axios.patch(`${URL}/${this.state.activeMarker.id}`, {
       place: {
@@ -93,16 +102,17 @@ class GoogleMap extends PureComponent {
         lon
       }
     }).then(({data}) => {
-      console.log(data)
       const locations = this.state.locations.filter(el => el.id !== this.state.activeMarker.id)
-      this.setState({locations: [...locations, data], activeMarker: null})
+      if (this._isMounted) {
+        this.setState({locations: [...locations, data], activeMarker: null})
+      }
+      
     }).catch((error) => {
       this.props.showError()
     })
   }
 
   render() {
-    console.log(this.state.locations)
     return (
       <div>
         { this.state.activeMarker &&
