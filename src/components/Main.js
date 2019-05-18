@@ -27,9 +27,9 @@ class Main extends PureComponent {
   deletePlace = (itemID) => {
     const URL = `http://localhost:3004/places/${itemID}`
     axios.delete(URL).then(() => {
-      let arr = this.state.locations
-      let findIndex = arr.findIndex((element) => element.id === itemID)
-      let result = findIndex >= 0 ? [...arr.slice(0, findIndex), ...arr.slice(findIndex + 1)] : arr
+      const arr = this.state.locations
+      const findIndex = arr.findIndex((element) => element.id === itemID)
+      const result = findIndex >= 0 ? [...arr.slice(0, findIndex), ...arr.slice(findIndex + 1)] : arr
       this.setState({locations: result, error: false})
     }).catch((error) => {
       this.setState({error: true})

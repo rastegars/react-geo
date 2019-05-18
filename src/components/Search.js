@@ -17,7 +17,7 @@ class Search extends PureComponent {
   }
 
   handleInputChange = (e) => {
-    let query = e.target.value
+    const query = e.target.value
     this.setState({ query })
 
     if (query && query.length > 1) {
