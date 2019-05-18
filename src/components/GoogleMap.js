@@ -87,11 +87,6 @@ class GoogleMap extends PureComponent {
     return this.state.locations.map(location => this.renderMarker(location))
   }
 
-  activeIndex = () => 
-    this.state.locations.findIndex(location => location.id === this.state.activeMarker.id)
-
-  finishEdit = () => this.setState({activeMarker: null})
-
   saveEdit = () => {
     const {id, location, lat, lon} = this.state.activeMarker
     const URL = 'http://localhost:3004/places'
