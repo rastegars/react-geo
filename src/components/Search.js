@@ -1,3 +1,4 @@
+// @flow
 import React, { PureComponent } from 'react';
 import '../styles/Search.css';
 import Places from './Places';
@@ -10,13 +11,46 @@ const initialState = {
   error: false,
 }
 
-class Search extends PureComponent {
-  constructor(props) {
+type SearchItem = {
+  data: {
+    place_id: string,
+    display_name: string,
+    lat: string,
+    lon: string
+  }
+};
+
+type SearchResultData = Array<SearchItem>;
+
+type Location = {
+  id: number,
+  location: string,
+  lat: string,
+  lon: string
+};
+
+type Locations = Array<Location>;
+
+type Props = {
+  locations: Locations,
+  deletePlace: (itemID: number) => void,
+  showError: () => void,
+  addLocation: (location: Location) => void
+};
+
+type State = {
+  searchItems: SearchResultData,
+  query: string,
+  error: boolean
+};
+
+class Search extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = initialState
   }
 
-  handleInputChange = (e) => {
+  handleInputChange = (e: {target: {value: string}}) => {
     const query = e.target.value
     this.setState({ query })
 
@@ -30,16 +64,15 @@ class Search extends PureComponent {
   }
 
   search = () => {
-    const SEARCH_URL = 'http://localhost:3004/places/search'
-    axios.get(`${SEARCH_URL}?prefix=${this.state.query}&limit=7`)
-         .then(({ data }) => {
-           this.setState({
-             searchItems: data,
-             error: false
-           })
-         }).catch((error) => {
-            this.props.showError()
-          })
+    const SEARCH_URL = `http://localhost:3004/places/search?prefix=${this.state.query}&limit=7`
+    axios.get(SEARCH_URL).then(({ data }) => {
+      this.setState({
+        searchItems: data,
+        error: false
+      })
+    }).catch((error) => {
+      this.props.showError()
+    })
   }
 
   renderContent = () => {

@@ -1,30 +1,60 @@
+// @flow
 import React, { PureComponent } from 'react'
 import axios from 'axios'
 import '../styles/SearchResult.css'
 
-class SearchResult extends PureComponent {
-  constructor(props) {
+type SearchItem = {
+  data: {
+    place_id: string,
+    display_name: string,
+    lat: string,
+    lon: string
+  }
+};
+
+type Location = {
+  id: number,
+  location: string,
+  lat: string,
+  lon: string
+};
+
+type SearchResultData = Array<SearchItem>;
+
+type Props = {
+  data: SearchResultData,
+  addLocation: (data: Location) => void,
+  reset: () => void,
+  showError: () => void,
+};
+
+type State = {
+  locations: SearchResultData,
+};
+
+class SearchResult extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = { locations: this.props.data }
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if(this.state.locations !== this.props.data) {
-      this.setState({locations: this.props.data, loading: this.props.loading})
+  componentDidUpdate(prevProps: Props) {
+    if(prevProps.data !== this.props.data) {
+      this.setState({locations: this.props.data})
     }
   }
 
-  saveLocation = (location) => {
+  saveLocation = (location: SearchItem) => {
     axios.post('http://localhost:3004/places', {
       location: location.data.display_name,
       lat: location.data.lat,
       lon: location.data.lon
     }).then(({data}) => {
-        this.props.addLocation(data)
-        this.props.reset()
-      }).catch((error) => {
-          this.props.showError()
-        })
+      this.props.addLocation(data)
+      this.props.reset()
+    }).catch((error) => {
+      this.props.showError()
+    })
   }
 
   render() {

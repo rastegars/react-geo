@@ -1,3 +1,4 @@
+// @flow
 import React, { PureComponent } from 'react'
 import GoogleMapReact from 'google-map-react'
 import '../styles/GoogleMap.css'
@@ -8,11 +9,40 @@ const mapStyles = {
   height: '100%'
 }
 
-const Marker = (props) => {
+type Location = {
+  id: number,
+  location: string,
+  lat: string,
+  lon: string
+};
+
+type Locations = Array<Location>;
+
+type Props = {
+  data: Locations,
+  showError: () => void,
+};
+
+type State = {
+  locations: Locations,
+  center: { lat: number, lng: number },
+  activeMarker: ?Location
+};
+
+type MarkerPropsTypes = {
+  dataTestID: string,
+  onClick: (item: Location) => void,
+  data: Location,
+  title: string
+};
+
+
+
+const Marker = (props: MarkerPropsTypes) => {
   const markerImageSrc = "https://res.cloudinary.com/og-tech/image/upload/s--OpSJXuvZ--/v1545236805/map-marker_hfipes.png"
   return (
     <div 
-      data-testid={props.dataTestid}
+      data-testid={props.dataTestID}
       className='marker'
       onClick={() => props.onClick(props.data)}>
       <img
@@ -24,12 +54,13 @@ const Marker = (props) => {
   )
 }
 
-class GoogleMap extends PureComponent {
+class GoogleMap extends PureComponent<Props, State> {
   _isMounted = false
+  _map: { current: null | HTMLDivElement }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props)
-    this.state = { center: { lat: 5.6219868, lng: -0.23223 }, locations: this.props.data }
+    this.state = { center: { lat: 5.6219868, lng: -0.23223 }, locations: this.props.data, activeMarker: null }
     this._map = React.createRef();
   }
 
@@ -41,15 +72,15 @@ class GoogleMap extends PureComponent {
     this._isMounted = false
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps: { data: Locations }) {
     if(prevProps.data !== this.props.data) {
       this.setState({locations: this.props.data})
     }
   }
 
-  markerClick = (item) => this.setState({activeMarker: item})
+  markerClick = (item: Location) => this.setState({activeMarker: item})
 
-  renderMarker = (item) => {
+  renderMarker = (item: Location) => {
     return (
       <Marker
         key={item.id}
@@ -58,20 +89,20 @@ class GoogleMap extends PureComponent {
         title={item.location}
         lat={item.lat}
         lng={item.lon}
-        dataTestid={this.state.activeMarker ? "active-marker" : "marker"}
+        dataTestID={this.state.activeMarker ? "active-marker" : "marker"}
       >
       </Marker>
     )
   }
 
-  updateActiveMarkerLocation = ({lat, lng}) => {
+  updateActiveMarkerLocation = ({lat, lng} : {lat : string, lng : string}) => {
     if (this.state.activeMarker) {
       this.setState({activeMarker: { ...this.state.activeMarker, lat: lat.toString(), lon: lng.toString() }})
       this.reverseSearch(lat, lng)
     }
   }
 
-  reverseSearch = (lat, lon) => {
+  reverseSearch = (lat: string, lon: string) => {
     const URL = `http://localhost:3004/places/reverse_search`
     axios.get(`${URL}/?lat=${lat}&lon=${lon}`).then(({data}) => {
       this.setState({activeMarker: { ...this.state.activeMarker, location: data[0].data.display_name }})
@@ -84,27 +115,32 @@ class GoogleMap extends PureComponent {
     if (this.state.activeMarker) {
       return this.renderMarker(this.state.activeMarker)
     }
-    return this.state.locations.map(location => this.renderMarker(location))
+    if (this.state.locations) {
+      return this.state.locations.map<{}>(location => this.renderMarker(location))
+    } 
   }
 
   saveEdit = () => {
-    const {id, location, lat, lon} = this.state.activeMarker
-    const URL = 'http://localhost:3004/places'
-    axios.patch(`${URL}/${this.state.activeMarker.id}`, {
-      place: {
-        location,
-        lat,
-        lon
-      }
-    }).then(({data}) => {
-      const locations = this.state.locations.filter(el => el.id !== this.state.activeMarker.id)
-      if (this._isMounted) {
-        this.setState({locations: [...locations, data], activeMarker: null})
-      }
-      
-    }).catch((error) => {
-      this.props.showError()
-    })
+    if (this.state.activeMarker) {
+      const {location, lat, lon, id} = this.state.activeMarker
+      const URL = 'http://localhost:3004/places'
+      axios.patch(`${URL}/${id}`, {
+        place: {
+          location,
+          lat,
+          lon
+        }
+      }).then(({data}) => {
+        const locations = this.state.locations.filter(el => el.id !== id)
+        
+        if (this._isMounted) {
+          this.setState({locations: [...locations, data], activeMarker: null})
+        }
+        
+      }).catch((error) => {
+        this.props.showError()
+      })
+    } 
   }
 
   render() {

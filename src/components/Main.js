@@ -1,11 +1,28 @@
+// @flow
 import React, { PureComponent } from 'react'
 import axios from 'axios'
 import GoogleMap from './GoogleMap'
 import Search from './Search'
 import '../styles/Main.css'
 
-class Main extends PureComponent {
-  constructor(props) {
+type Location = {
+  id: number,
+  location: string,
+  lat: string,
+  lon: string
+};
+
+type Locations = Array<Location>;
+
+type Props = {};
+
+type State = {
+  locations: Locations,
+  error: boolean
+};
+
+class Main extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = { locations: [], error: false }
   }
@@ -24,7 +41,7 @@ class Main extends PureComponent {
     })
   }
 
-  deletePlace = (itemID) => {
+  deletePlace = (itemID: number) => {
     const URL = `http://localhost:3004/places/${itemID}`
     axios.delete(URL).then(() => {
       const arr = this.state.locations
@@ -45,7 +62,7 @@ class Main extends PureComponent {
       <p style={{margin: 0}}>Something Went Wrong!</p>
     </div>
 
-  addLocation = (location) => {
+  addLocation = (location: Location) => {
     this.setState({locations: [...this.state.locations, location]})
   }
 

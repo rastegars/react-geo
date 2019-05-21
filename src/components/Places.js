@@ -1,19 +1,38 @@
+// @flow
 import React, { PureComponent } from 'react'
 import '../styles/Places.css'
 
-class Places extends PureComponent {
-  constructor(props) {
+type Location = {
+  id: number,
+  location: string,
+  lat: string,
+  lon: string
+};
+
+type Locations = Array<Location>;
+
+type Props = {
+  data: Locations,
+  deletePlace: (itemID: number) => void,
+};
+
+type State = {
+  locations: Locations,
+};
+
+class Places extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = { locations: props.data }
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if(this.state.locations !== this.props.data) {
+  componentDidUpdate(prevProps: Props) {
+    if(prevProps.data !== this.props.data) {
       this.setState({locations: this.props.data})
     }
   }
 
-  renderItem = (item) =>
+  renderItem = (item: Location) =>
     <div className="list-item" key={item.id}>
       <p className="location-name">{item.location}</p>
       <p>Latitude: {item.lat}</p>
