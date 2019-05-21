@@ -36,8 +36,6 @@ type MarkerPropsTypes = {
   title: string
 };
 
-
-
 const Marker = (props: MarkerPropsTypes) => {
   const markerImageSrc = "https://res.cloudinary.com/og-tech/image/upload/s--OpSJXuvZ--/v1545236805/map-marker_hfipes.png"
   return (
@@ -49,7 +47,7 @@ const Marker = (props: MarkerPropsTypes) => {
         className='marker-image'
         src={markerImageSrc}
         alt={props.title} />
-      <h3>{props.title}</h3>
+      <p className='marker-title'>{props.title}</p>
     </div>
   )
 }
@@ -80,13 +78,21 @@ class GoogleMap extends PureComponent<Props, State> {
 
   markerClick = (item: Location) => this.setState({activeMarker: item})
 
+  markerTitle = (title) => {
+    if (title) {
+      if (title.length > 20) return title.substring(0, 20) + ' ...'
+      return title
+    }
+  }
+
+
   renderMarker = (item: Location) => {
     return (
       <Marker
         key={item.id}
         data={item}
         onClick={this.markerClick}
-        title={item.location}
+        title={this.markerTitle(item.location) || 'Unknown Location'}
         lat={item.lat}
         lng={item.lon}
         dataTestID={this.state.activeMarker ? "active-marker" : "marker"}

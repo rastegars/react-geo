@@ -29,3 +29,10 @@
   top: 88px;
   left: 0px;
 }
+
+.marker-title {
+  background-color: #171313a6;
+  border-radius: 5px;
+  padding: 5px;
+  color: white
+}
