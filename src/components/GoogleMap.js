@@ -16,7 +16,7 @@ type Location = {
   lon: string
 };
 
-type Locations = Array<Location>;
+type Locations = $ReadOnlyArray<Location>;
 
 type Props = {
   data: Locations,
@@ -26,7 +26,8 @@ type Props = {
 type State = {
   locations: Locations,
   center: { lat: number, lng: number },
-  activeMarker: ?Location
+  activeMarker: ?Location,
+  loading: boolean
 };
 
 type MarkerPropsTypes = {
@@ -58,7 +59,7 @@ class GoogleMap extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.state = { center: { lat: 5.6219868, lng: -0.23223 }, locations: this.props.data, activeMarker: null }
+    this.state = { center: { lat: 5.6219868, lng: -0.23223 }, locations: this.props.data, activeMarker: null, loading: false }
     this._map = React.createRef();
   }
 
@@ -78,7 +79,7 @@ class GoogleMap extends PureComponent<Props, State> {
 
   markerClick = (item: Location) => this.setState({activeMarker: item})
 
-  markerTitle = (title) => {
+  markerTitle = (title: string) => {
     if (title) {
       if (title.length > 20) return title.substring(0, 20) + ' ...'
       return title
@@ -103,7 +104,7 @@ class GoogleMap extends PureComponent<Props, State> {
 
   updateActiveMarkerLocation = ({lat, lng} : {lat : string, lng : string}) => {
     if (this.state.activeMarker) {
-      this.setState({activeMarker: { ...this.state.activeMarker, lat: lat.toString(), lon: lng.toString() }})
+      this.setState({activeMarker: { ...this.state.activeMarker, lat: lat.toString(), lon: lng.toString(), loading: true }})
       this.reverseSearch(lat, lng)
     }
   }
@@ -111,7 +112,7 @@ class GoogleMap extends PureComponent<Props, State> {
   reverseSearch = (lat: string, lon: string) => {
     const URL = `http://localhost:3004/places/reverse_search`
     axios.get(`${URL}/?lat=${lat}&lon=${lon}`).then(({data}) => {
-      this.setState({activeMarker: { ...this.state.activeMarker, location: data[0].data.display_name }})
+      this.setState({activeMarker: { ...this.state.activeMarker, location: data[0].data.display_name }, loading: false})
     }).catch((error) => {
       this.props.showError()
     })
@@ -127,7 +128,7 @@ class GoogleMap extends PureComponent<Props, State> {
   }
 
   saveEdit = () => {
-    if (this.state.activeMarker) {
+    if (this.state.activeMarker && !this.state.loading) {
       const {location, lat, lon, id} = this.state.activeMarker
       const URL = 'http://localhost:3004/places'
       axios.patch(`${URL}/${id}`, {
