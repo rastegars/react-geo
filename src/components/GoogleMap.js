@@ -77,7 +77,7 @@ class GoogleMap extends PureComponent<Props, State> {
     }
   }
 
-  markerClick = (item: Location) => this.setState({activeMarker: item})
+  markerClick = (item: Location) => this.setState({activeMarker: item, center: {lat: Number(item.lat), lng: Number(item.lon)}})
 
   markerTitle = (title: string) => {
     if (title) {
@@ -85,7 +85,6 @@ class GoogleMap extends PureComponent<Props, State> {
       return title
     }
   }
-
 
   renderMarker = (item: Location) => {
     return (
@@ -104,7 +103,7 @@ class GoogleMap extends PureComponent<Props, State> {
 
   updateActiveMarkerLocation = ({lat, lng} : {lat : string, lng : string}) => {
     if (this.state.activeMarker) {
-      this.setState({activeMarker: { ...this.state.activeMarker, lat: lat.toString(), lon: lng.toString(), loading: true }})
+      this.setState({activeMarker: { ...this.state.activeMarker, lat: lat.toString(), lon: lng.toString()}, loading: true, center: { lat: Number(lat), lng: Number(lng)}})
       this.reverseSearch(lat, lng)
     }
   }
