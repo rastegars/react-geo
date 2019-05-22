@@ -7,6 +7,16 @@ npm install
 npm start
 ```
 
+## Back-End Installation
+```
+git clone https://github.com/rastegars/geo-coding-api.git
+cd geo-coding-api/
+bundle install
+rails db:migrate
+rails s -p 3004 -b 0.0.0.0
+```
+https://github.com/rastegars/geo-coding-api
+
 ## Available Scripts
 
 In the project directory, you can run:
