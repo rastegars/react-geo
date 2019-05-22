@@ -1,4 +1,11 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Installation
+```
+git clone https://github.com/rastegars/react-geo.git
+cd react-geo/
+npm install
+npm start
+```
 
 ## Available Scripts
 
