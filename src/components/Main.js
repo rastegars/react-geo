@@ -24,12 +24,16 @@ type State = {
 class Main extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props)
-    this.state = { locations: [], error: false }
+    this.state = { locations: [], error: false, fullScreen: false }
   }
 
   componentDidMount() {
     this.getPlaces()
+    window.addEventListener("fullscreenchange", this._toggleFullScreen);
   }
+
+  _toggleFullScreen = () =>
+    this.setState(prevState => ({fullScreen: !prevState.fullScreen}))
 
   getPlaces = () => {
     axios.get('http://localhost:3004/places').then(({data}) => {
@@ -69,12 +73,18 @@ class Main extends PureComponent<Props, State> {
   render() {
     return (
       <div>
-        <div className="header">
-          <a href="#default" className="logo">React Geocoding Exercise</a>
-        </div>
+        { !this.state.fullScreen &&
+          <div className="header">
+            <a href="#default" className="logo">React Geocoding Exercise</a>
+          </div>
+        }
         {this.state.error && this.renderError()}
         <GoogleMap data={this.state.locations} showError={this.showError} />
-        <Search locations={this.state.locations} addLocation={this.addLocation} showError={this.showError} deletePlace={this.deletePlace} />
+        {
+          !this.state.fullScreen &&
+          <Search locations={this.state.locations} addLocation={this.addLocation} showError={this.showError} deletePlace={this.deletePlace} />
+        }
+        
       </div>
     )
   }

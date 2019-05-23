@@ -21,13 +21,14 @@
 
 .editBar {
   padding: 20px;
-  background-color: #404040;
+  background-color: #2c2e2f;
   color: white;
   position: fixed;
   z-index: 2;
   right: 0;
-  top: 88px;
   left: 0px;
+  top: 0;
+  height: 48px;
 }
 
 .marker-title {
