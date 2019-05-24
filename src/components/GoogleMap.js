@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react'
 import GoogleMapReact from 'google-map-react'
 import '../styles/GoogleMap.css'
 import axios from 'axios'
+import Marker from './Marker'
 
 const mapStyles = {
   width: '100%',
@@ -33,28 +34,10 @@ type State = {
   draggable: boolean
 };
 
-type MarkerPropsTypes = {
-  dataTestID: string,
-  onClick: (item: Location) => void,
-  data: Location,
-  title: string
-};
-
 type Coordinates = {
   lat: string,
   lng: string
 };
-
-const Marker = (props: MarkerPropsTypes) => {
-  return (
-    <div 
-      data-testid={props.dataTestID}
-      className='pin'
-      onClick={() => props.onClick(props.data)}>
-      <p className='marker-title'>{props.title}</p>
-    </div>
-  )
-}
 
 class GoogleMap extends PureComponent<Props, State> {
   _isMounted = false
