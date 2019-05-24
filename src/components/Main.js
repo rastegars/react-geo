@@ -18,7 +18,8 @@ type Props = {};
 
 type State = {
   locations: Locations,
-  error: boolean
+  error: boolean,
+  fullScreen: boolean
 };
 
 class Main extends PureComponent<Props, State> {
