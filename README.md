@@ -1,4 +1,21 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Installation
+```
+git clone https://github.com/rastegars/react-geo.git
+cd react-geo/
+npm install
+npm start
+```
+
+## Back-End Installation
+```
+git clone https://github.com/rastegars/geo-coding-api.git
+cd geo-coding-api/
+bundle install
+rails db:create; rails db:migrate
+rails s -p 3004 -b 0.0.0.0
+```
+https://github.com/rastegars/geo-coding-api
 
 ## Available Scripts
 
