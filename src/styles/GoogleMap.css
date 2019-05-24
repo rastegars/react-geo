@@ -9,15 +9,40 @@
   height: 100%;
 }
 
-.marker {
-  height: 25px;
-  width: 25px;
-  margin-top: -14px;
-  margin-left: -10px;
+.pin {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  border-radius: 50%;
+  border: 8px solid #bf2323;
+  width: 8px;
+  height: 8px;
+  margin-left: -11px;
+  margin-top: -11px;
 }
 
-.marker-image {
-  height: 100%;
+.pin::after {
+  position: absolute;
+  content: '';
+  width: 0px;
+  height: 0px;
+  bottom: -30px;
+  left: -6px;
+  border: 10px solid transparent;
+  border-top: 17px solid #bf2323;
+}
+
+.pin p {
+  display: none;
+  width: 136px;
+  text-align: center;
+  position: relative;
+  right: 68px;
+  top: 26px;
+}
+
+.pin:hover p {
+  display: block;
 }
 
 .editBar {

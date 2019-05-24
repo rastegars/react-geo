@@ -44,16 +44,11 @@ type Coordinates = {
 };
 
 const Marker = (props: MarkerPropsTypes) => {
-  const markerImageSrc = "https://res.cloudinary.com/og-tech/image/upload/s--OpSJXuvZ--/v1545236805/map-marker_hfipes.png"
   return (
     <div 
       data-testid={props.dataTestID}
-      className='marker'
+      className='pin'
       onClick={() => props.onClick(props.data)}>
-      <img
-        className='marker-image'
-        src={markerImageSrc}
-        alt={props.title} />
       <p className='marker-title'>{props.title}</p>
     </div>
   )
