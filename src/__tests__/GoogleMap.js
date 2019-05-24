@@ -37,14 +37,16 @@ describe('marker edit', () => {
     }]
   }
 
-  test('updates marker location upon clicking on map', async () => {
+  const targetCoordinates = { lat: '12', lng: '13' }
+
+  test("updates marker's location when draging marker on map", async () => {
     axiosMock.get.mockResolvedValueOnce(response)
     const ref = React.createRef();
     const {getByTestId, getByText} = render(<GoogleMap data={data} ref={ref} />)
     
     fireEvent.click(getByTestId('marker'))
 
-    ref.current._map.current.props.onClick({lat: 20.1, lng: 15.4})
+    ref.current._map.current.props.onChildMouseUp({}, {}, targetCoordinates)
 
     await waitForElement(() =>
       getByText('New Place')
@@ -68,7 +70,7 @@ describe('marker edit', () => {
     
     fireEvent.click(getByTestId('marker'))
 
-    ref.current._map.current.props.onClick({lat: 20.1, lng: 15.4})
+    ref.current._map.current.props.onChildMouseUp({}, {}, targetCoordinates)
 
     await waitForElement(() =>
       getByText('New Place')

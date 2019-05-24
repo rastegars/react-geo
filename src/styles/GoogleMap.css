@@ -10,9 +10,10 @@
 }
 
 .marker {
-  height: 50px;
-  width: 50px;
-  margin-top: -50px;
+  height: 25px;
+  width: 25px;
+  margin-top: -14px;
+  margin-left: -10px;
 }
 
 .marker-image {
