@@ -9,6 +9,8 @@ const mapStyles = {
   height: '100%'
 }
 
+const defaultCenter = { lat: 5.6219868, lng: -0.23223 }
+
 type Location = {
   id: number,
   location: string,
@@ -60,7 +62,7 @@ class GoogleMap extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props)
-    this.state = { center: { lat: 5.6219868, lng: -0.23223 }, locations: this.props.data, activeMarker: null, loading: false, draggable: true }
+    this.state = { center: defaultCenter, locations: this.props.data, activeMarker: null, loading: false, draggable: true }
     this._map = React.createRef();
   }
 
@@ -154,6 +156,9 @@ class GoogleMap extends PureComponent<Props, State> {
     } 
   }
 
+  cancelEdit = () =>
+    this.setState({activeMarker: null, center: defaultCenter})
+
   onChildMouseDown = (childKey: number, childProps: {}, mouse: Coordinates) => {
     this.setState({
       draggable: false,
@@ -176,8 +181,9 @@ class GoogleMap extends PureComponent<Props, State> {
     return (
       <div>
         { this.state.activeMarker &&
-          <div className="editBar" onClick={this.saveEdit}>
-            <button className="button">Save</button>
+          <div className="editBar">
+            <button className="button" onClick={this.saveEdit}>Save</button>
+            <button className="button" onClick={this.cancelEdit}>Cancel</button>
           </div>
         }
         <div data-testid='google-map-container' className='map-container'>

@@ -45,6 +45,13 @@
   display: block;
 }
 
+.marker-title {
+  background-color: #171313a6;
+  border-radius: 5px;
+  padding: 5px;
+  color: white
+}
+
 .editBar {
   padding: 20px;
   background-color: #2c2e2f;
@@ -57,9 +64,23 @@
   height: 48px;
 }
 
-.marker-title {
-  background-color: #171313a6;
-  border-radius: 5px;
-  padding: 5px;
-  color: white
+.editBar .button {
+  background-color: #404f5f;
+  border: none;
+  color: #fafafa;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+.editBar .button:hover {
+  background-color: #4d6073;
+  color: white;
 }
