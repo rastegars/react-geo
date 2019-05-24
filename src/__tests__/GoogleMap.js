@@ -95,4 +95,25 @@ describe('marker edit', () => {
       getByText('New Place')
     )
   })
+
+  test('cancels edit when, cancel button is clicked', async () => {  
+
+    axiosMock.get.mockResolvedValueOnce(response)
+
+    const ref = React.createRef();
+    const {getByTestId, getByText, queryByText} = render(<GoogleMap data={data} ref={ref} />)
+    
+    fireEvent.click(getByTestId('marker'))
+
+    ref.current._map.current.props.onChildMouseUp({}, {}, targetCoordinates)
+
+    await waitForElement(() =>
+      getByText('New Place')
+    )
+
+    fireEvent.click(getByText('Cancel'))
+
+    expect(queryByText('Place Name')).toBeInTheDocument()
+    expect(queryByText('New Place')).not.toBeInTheDocument()
+  })
 })
