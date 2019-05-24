@@ -179,7 +179,7 @@ class GoogleMap extends PureComponent<Props, State> {
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         { this.state.activeMarker &&
           <div className="editBar">
             <button className="button" onClick={this.saveEdit}>Save</button>
@@ -201,7 +201,7 @@ class GoogleMap extends PureComponent<Props, State> {
             {this.renderMarkers()}
           </GoogleMapReact>
         </div>
-      </div>
+      </React.Fragment>
     )
   }
 }

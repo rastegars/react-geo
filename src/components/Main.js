@@ -80,12 +80,13 @@ class Main extends PureComponent<Props, State> {
           </div>
         }
         {this.state.error && this.renderError()}
-        <GoogleMap data={this.state.locations} showError={this.showError} />
-        {
-          !this.state.fullScreen &&
-          <Search locations={this.state.locations} addLocation={this.addLocation} showError={this.showError} deletePlace={this.deletePlace} />
-        }
-        
+        <div className='container'>
+          <GoogleMap data={this.state.locations} showError={this.showError} />
+          {
+            !this.state.fullScreen &&
+            <Search locations={this.state.locations} addLocation={this.addLocation} showError={this.showError} deletePlace={this.deletePlace} />
+          }
+        </div>
       </div>
     )
   }
