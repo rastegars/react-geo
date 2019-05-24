@@ -109,7 +109,7 @@ class GoogleMap extends PureComponent<Props, State> {
   updateActiveMarkerLocation = ({lat, lng} : {lat : string, lng : string}) => {
     this.setState({
       activeMarker: { ...this.state.activeMarker, lat: lat.toString(), lon: lng.toString()},
-      loading: true, center: { lat: Number(lat), lng: Number(lng)}
+      loading: true
     })
   }
 
@@ -119,7 +119,8 @@ class GoogleMap extends PureComponent<Props, State> {
       this.setState({
         activeMarker: { ...this.state.activeMarker, location: data[0].data.display_name },
         loading: false,
-        draggable: true
+        draggable: true,
+        center: { lat: Number(lat), lng: Number(lon)}
       })
     }).catch((error) => {
       this.props.showError()
@@ -157,8 +158,6 @@ class GoogleMap extends PureComponent<Props, State> {
       })
     } 
   }
-
-
 
   onChildMouseDown = (childKey: number, childProps: {}, mouse: Coordinates) => {
     this.setState({
