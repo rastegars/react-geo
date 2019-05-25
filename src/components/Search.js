@@ -64,7 +64,8 @@ class Search extends PureComponent<Props, State> {
   }
 
   search = () => {
-    const SEARCH_URL = `http://localhost:3004/places/search?prefix=${this.state.query}&limit=7`
+    if (!process.env.REACT_APP_API_HOST) throw new Error('REACT_APP_API_HOST missing')
+    const SEARCH_URL = `${process.env.REACT_APP_API_HOST}/places/search?prefix=${this.state.query}&limit=7`
     axios.get(SEARCH_URL).then(({ data }) => {
       this.setState({
         searchItems: data,

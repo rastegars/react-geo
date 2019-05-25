@@ -94,7 +94,8 @@ class GoogleMap extends PureComponent<Props, State> {
   }
 
   reverseSearch = (lat: string, lon: string) => {
-    const URL = `http://localhost:3004/places/reverse_search`
+    if (!process.env.REACT_APP_API_HOST) throw new Error('REACT_APP_API_HOST missing')
+    const URL = `${process.env.REACT_APP_API_HOST}/places/reverse_search`
     axios.get(`${URL}/?lat=${lat}&lon=${lon}`).then(({data}) => {
       this.setState({
         activeMarker: { ...this.state.activeMarker, location: data[0].data.display_name },
@@ -119,7 +120,8 @@ class GoogleMap extends PureComponent<Props, State> {
   saveEdit = () => {
     if (this.state.activeMarker && !this.state.loading) {
       const {location, lat, lon, id} = this.state.activeMarker
-      const URL = 'http://localhost:3004/places'
+      if (!process.env.REACT_APP_API_HOST) throw new Error('REACT_APP_API_HOST missing')
+      const URL = `${process.env.REACT_APP_API_HOST}/places`
       axios.patch(`${URL}/${id}`, {
         place: {
           location,
@@ -173,7 +175,7 @@ class GoogleMap extends PureComponent<Props, State> {
           <GoogleMapReact
             draggable={this.state.draggable}
             style={mapStyles}
-            bootstrapURLKeys={{ key: 'AIzaSyBF-jDwc5-WCjWj-S4pE71cguwIKmEMMaQ' }}
+            bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY }}
             center={this.state.center}
             zoom={1}
             onChildMouseDown={this.onChildMouseDown}

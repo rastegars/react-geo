@@ -37,7 +37,8 @@ class Main extends PureComponent<Props, State> {
     this.setState(prevState => ({fullScreen: !prevState.fullScreen}))
 
   getPlaces = () => {
-    axios.get('http://localhost:3004/places').then(({data}) => {
+    if (!process.env.REACT_APP_API_HOST) throw new Error('REACT_APP_API_HOST missing')
+    axios.get(`${process.env.REACT_APP_API_HOST}/places`).then(({data}) => {
       this.setState({
         locations: data
       }) 
@@ -47,7 +48,8 @@ class Main extends PureComponent<Props, State> {
   }
 
   deletePlace = (itemID: number) => {
-    const URL = `http://localhost:3004/places/${itemID}`
+    if (!process.env.REACT_APP_API_HOST) throw new Error('REACT_APP_API_HOST missing')
+    const URL = `${process.env.REACT_APP_API_HOST}/places/${itemID}`
     axios.delete(URL).then(() => {
       const arr = this.state.locations
       const findIndex = arr.findIndex((element) => element.id === itemID)

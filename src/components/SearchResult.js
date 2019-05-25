@@ -45,7 +45,8 @@ class SearchResult extends PureComponent<Props, State> {
   }
 
   saveLocation = (location: SearchItem) => {
-    axios.post('http://localhost:3004/places', {
+    if (!process.env.REACT_APP_API_HOST) throw new Error('REACT_APP_API_HOST missing')
+    axios.post(`${process.env.REACT_APP_API_HOST}/places`, {
       location: location.data.display_name,
       lat: location.data.lat,
       lon: location.data.lon
